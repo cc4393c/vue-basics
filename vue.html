@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+</head>
+<body>
+
+<div id="root">
+  {{ message }}
+</div>
+
+<script src="./vue.js"></script>
+
+<script type="text/javascript">
+  // 应用范围广、生态环境好
+  // 代码轻量
+  // vm.message === vm.$data.message
+
+  // mustache语法
+
+  // 双向绑定
+
+  const vm = new Vue({
+    el: '#root',
+    data: {
+      message: '2022'
+    }
+  });
+
+  setTimeout(function () {
+    vm.message = '2023';
+  }, 2000);
+</script>
+
+</body>
+</html>

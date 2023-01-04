@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plain</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    var root = document.getElementById('root');
+
+    root.innerHTML = '2022';
+
+    setTimeout(function () {
+      root.innerHTML = '2023'
+    }, 2000);
+  </script>
+</body>
+</html>
