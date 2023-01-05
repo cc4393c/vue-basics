@@ -1,36 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo List</title>
 </head>
+
 <body>
   <div id="root">
-    <input type="text" v-model="content" />
+    <input type="text" v-model="inputValue" v-on:keydown="handleKeyDown" />
     <button v-on:click="handleBtnClick">Submit</button>
     <ul>
-      <li v-for="item in items">{{ item }}</li>
+      <todo-item v-bind:content="item.label" v-for="item in items" v-bind:key="item.id"></todo-item>
     </ul>
   </div>
 
   <script src="./vue.js"></script>
 
   <script>
+    const TodoItem = {
+      props: ['content'],
+      template: `<li>{{ content }}</li>`
+    }
+
+    // Global Registration
+    // Vue.component('todo-item', {
+    //   props: ['content'],
+    //   template: `
+    //     <li>{{ content }}</li>
+    //   `
+    // })
+
     const vm = new Vue({
       el: '#root',
+      // Local Registration
+      components: {
+        'todo-item': TodoItem
+      },
       data: {
-        content: '',
-        items: ['Grass', 'Fire', 'Water']
+        inputValue: '',
+        items: [
+          {
+            id: 1,
+            label: 'Grass'
+          },
+          {
+            id: 2,
+            label: 'Fire'
+          },
+          {
+            id: 3,
+            label: 'Water'
+          }
+        ]
       },
       methods: {
         handleBtnClick: function () {
-          this.items.push(this.content);
-          this.content = '';
+          this.items.push({
+            id: new Date().getTime(),
+            label: this.inputValue
+          })
+          this.inputValue = ''
+        },
+        handleKeyDown: function ({ keyCode }) {
+          if (keyCode === 13 && vm.inputValue) {
+            vm.handleBtnClick()
+          }
         }
       }
-    });
+    })
   </script>
 </body>
+
 </html>
