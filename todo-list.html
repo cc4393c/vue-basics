@@ -17,9 +17,10 @@
     </ul>
   </div>
 
-  <script src="./vue.js"></script>
+  <script src="vue2.js"></script>
 
   <script>
+    // Define a local component
     const TodoItem = {
       props: ['content'],
       template: `
@@ -40,7 +41,7 @@
 
     const vm = new Vue({
       el: '#root',
-      // Local Registration
+      // Locally registrate the local component
       components: {
         'todo-item': TodoItem
       },
@@ -49,7 +50,7 @@
         items: [
           {
             id: 1,
-            label: 'Grass'
+            label: 'Do math homework'
           },
           {
             id: 2,
