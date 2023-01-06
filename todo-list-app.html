@@ -1,108 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo List</title>
 </head>
+
 <body>
 
-<script src="vue3.js"></script>
+  <script src="vue3.js"></script>
 
-<div id="app">
-  <div class="todo-list">
-    <todo-form @add-todo="addTodo" />
-    <ul>
-      <todo-item v-for="item of items" :key="item.id" :todo="item" @change-completed="changeCompleted" />
-    </ul>
+  <div id="app">
+    <div class="todo-list">
+      <todo-form @add-todo="addTodo"></todo-form>
+      <ul>
+        <todo-item 
+          v-for="item of items" :key="item.id"
+          :todo="item" 
+          @change-completed="changeCompleted"
+          @remove-todo="removeTodo">
+        </todo-item>
+      </ul>
+    </div>
   </div>
-</div>
 
-<script>
-  const {createApp} = Vue
+  <script>
+    const { createApp } = Vue
 
-  const TodoList = {
-    data() {
-      return {
-        items: [
-          {
-            id: 1,
-            content: '123',
-            completed: false
-          },
-          {
-            id: 2,
-            content: '234',
-            completed: false
-          },
-          {
-            id: 3,
-            content: '345',
-            completed: false
-          }
-        ]
-      }
-    },
-    methods: {
-      addTodo(value) {
-        this.items.push({
-          id: new Date().getTime(),
-          content: value,
-          completed: false
-        })
-        console.log(this.items)
+    const TodoList = {
+      data() {
+        return {
+          items: [
+            {
+              id: 1,
+              content: 'Study',
+              completed: false
+            },
+            {
+              id: 2,
+              content: 'Cook',
+              completed: false
+            },
+            {
+              id: 3,
+              content: 'Do chores',
+              completed: false
+            }
+          ]
+        }
       },
-      removeTodo(id) {
-        this.items = this.items.filter(item => item.id !== id)
-      },
-      changeCompleted(id) {
-        this.items = this.items.map(item => {
-          if (item.id === id) {
-            item.completed = !item.completed
+      methods: {
+        addTodo(value) {
+          if (value) {
+            this.items.push({
+              id: new Date().getTime(),
+              content: value,
+              completed: false
+            })
           }
-          return item
-        })
+        },
+        removeTodo(id) {
+          this.items = this.items.filter(item => item.id !== id)
+        },
+        changeCompleted(id) {
+          this.items = this.items.map(item => {
+            if (item.id === id) {
+              item.completed = !item.completed
+            }
+            return item
+          })
+        }
       }
     }
-  }
 
-  const app = createApp(TodoList)
+    const app = createApp(TodoList)
 
-  app.component('todo-form', {
-    data() {
-      return {
-        inputValue: ''
-      }
-    },
-    template: `
+    app.component('todo-form', {
+      data() {
+        return {
+          inputValue: ''
+        }
+      },
+      template: `
       <div>
         <input type="text" placeholder="Please enter" v-model="inputValue" />
         <button @click="addTodo">Add one</button>
-      </div>
-    `,
-    methods: {
-      addTodo() {
-        this.$emit('add-todo', this.inputValue)
+      </div>`,
+      methods: {
+        addTodo() {
+          this.$emit('add-todo', this.inputValue)
+        }
       }
-    }
-  })
+    })
 
-  app.component('todo-item', {
-    props: ['todo'],
-    template: `
-      <li>
-        <input type="checkbox" :checked="todo.completed" @click="changeCompleted(todo.id)" />
-      </li>
-    `,
-    methods: {
-      changeCompleted(id) {
-        this.$emit('change-completed', id)
+    app.component('todo-item', {
+      props: ['todo'],
+      template: `
+        <li>
+          <input
+            type="checkbox"
+            :checked="todo.completed"
+            @click="changeCompleted(todo.id)"
+          />
+          <span
+            :style="{
+              textDecoration: todo.completed ? 'line-through' : 'none'
+            }"
+          >
+            {{ todo.content }}
+          </span>
+          <button @click="removeTodo(todo.id)">Delete</button>
+        </li>
+      `,
+      methods: {
+        changeCompleted(id) {
+          this.$emit('change-completed', id)
+        },
+        removeTodo(id) {
+          this.$emit('remove-todo', id)
+        }
       }
-    }
-  })
+    })
 
-  app.mount('#app')
-</script>
+    app.mount('#app')
+  </script>
 </body>
+
 </html>
