@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Root Component</title>
+</head>
+<body>
+  <script src="./vue3.js"></script>
+
+  <div id="app"></div>
+
+  <script>
+    const { createApp } = Vue;
+
+    /**
+     * 根组件本质是一个对象
+     * createApp执行时需要一个根组件
+     * 根组件是Vue渲染的起点
+     */
+    const RootComponent = {
+      template: `<h1>{{ a }} + {{ b }} = {{ sum }}</h1>`,
+      data() {
+        return {
+          a: 1,
+          b: 2,
+          sum: 0
+        }
+      },
+      mounted() {
+        this.plus();
+      },
+      methods: {
+        plus() {
+          this.sum = this.a + this.b;
+        }
+      }
+    };
+
+    const app = createApp(RootComponent);
+    
+    /**
+     * mount 方法返回根组件，而不是应用实例
+     * vm: ViewModel, MVVM
+     * Vue不是一个完整的MVVM模型
+     */
+    const vm = app.mount('#app');
+    
+    console.log(vm.a, vm.b, vm.sum);
+  </script>
+</body>
+</html>

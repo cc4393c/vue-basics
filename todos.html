@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo List</title>
+  <title>Todos</title>
 </head>
-
 <body>
-
-  <script src="vue3.js"></script>
+  <script src="./vue3.js"></script>
 
   <div id="app">
     <todo-form @add-todo="addTodo"></todo-form>
     <ul>
-      <todo-item v-for="item of items" :key="item.id" :todo="item" @change-completed="changeCompleted"
-        @remove-todo="removeTodo">
+      <todo-item
+        v-for="item of items" :key="item.id"
+        :todo="item"
+        @change-completed="changeCompleted"
+        @remove-todo="removeTodo"
+      >
       </todo-item>
     </ul>
   </div>
@@ -24,24 +25,23 @@
   <script>
     const { createApp } = Vue
 
-    // Define the root component
     const TodoList = {
       data() {
         return {
           items: [
             {
               id: 1,
-              content: 'Study',
+              content: 'Do homework',
               completed: false
             },
             {
               id: 2,
-              content: 'Cook',
+              content: 'Do chores',
               completed: false
             },
             {
               id: 3,
-              content: 'Do chores',
+              content: 'Cook dinner',
               completed: false
             }
           ]
@@ -49,16 +49,11 @@
       },
       methods: {
         addTodo(value) {
-          if (value) {
-            this.items.push({
-              id: new Date().getTime(),
-              content: value,
-              completed: false
-            })
-          }
-        },
-        removeTodo(id) {
-          this.items = this.items.filter(item => item.id !== id)
+          this.items.push({
+            id: new Date().getTime(),
+            content: value,
+            completed: false
+          })
         },
         changeCompleted(id) {
           this.items = this.items.map(item => {
@@ -67,25 +62,27 @@
             }
             return item
           })
+        },
+        removeTodo(id) {
+          this.items = this.items.filter(item => item.id !== id)
         }
       }
     }
 
     const app = createApp(TodoList)
 
-    // Register a global component
     app.component('todo-form', {
+      template: `
+        <div>
+          <input type="text" v-model="inputValue" />
+          <button @click="addTodo">Add</button>
+        </div>
+      `,
       data() {
         return {
           inputValue: ''
         }
       },
-      template: `
-        <div>
-          <input type="text" placeholder="Add new todo..." v-model="inputValue" @keydown.enter="addTodo"/>
-          <button @click="addTodo">Add one</button>
-        </div>
-      `,
       methods: {
         addTodo() {
           this.$emit('add-todo', this.inputValue)
@@ -97,16 +94,8 @@
       props: ['todo'],
       template: `
         <li>
-          <input
-            type="checkbox"
-            :checked="todo.completed"
-            @click="changeCompleted(todo.id)"
-          />
-          <span
-            :style="{
-              textDecoration: todo.completed ? 'line-through' : 'none'
-            }"
-          >
+          <input type="checkbox" @click="changeCompleted(todo.id)" />
+          <span :style="{ textDecoration: todo.completed ? 'line-through' : 'none' }">
             {{ todo.content }}
           </span>
           <button @click="removeTodo(todo.id)">Delete</button>
@@ -122,9 +111,7 @@
       }
     })
 
-    // Mount the app
     app.mount('#app')
   </script>
 </body>
-
 </html>

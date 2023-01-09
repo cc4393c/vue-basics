@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Instance</title>
+</head>
+<body>
+  <script src="./vue3.js"></script>
+
+  <div id="app">
+    <my-title></my-title>
+  </div>
+
+  <script>
+    const { createApp } = Vue
+
+    const app = createApp()
+
+    /**
+     * 应用实例上暴露了很多方法
+     * component 注册组件
+     * directive 注册指令
+     * filter    注册过滤器
+     * use       使用插件
+     * 
+     * 大多数方法返回createApp创建出来的应用实例
+     * 因此可以进行链式操作
+     */
+
+    app.component('MyTitle', {
+      data() {
+        return {
+          title: 'VUE APP INSTANCE'
+        }
+      },
+      template: `<h1 v-to-lower-case>{{ title }}</h1>`
+    }).directive('toLowerCase', {
+      mounted(el) {
+        el.addEventListener('click', function () {
+          this.innerText = this.innerText.toLowerCase();
+        }, false)
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>
