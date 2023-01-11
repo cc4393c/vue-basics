@@ -102,19 +102,23 @@
             :checked="todo.completed"
             @click="changeCompleted(todo.id)"
           />
-          <span
-            :style="{
-              textDecoration: todo.completed ? 'line-through' : 'none'
-            }"
-          >
+          <span :style="styleObject">
             {{ todo.content }}
           </span>
           <button @click="removeTodo(todo.id)">Delete</button>
         </li>
       `,
+      computed: {
+        styleObject() {
+          return {
+            textDecoration: this.todo.completed ? 'line-through' : 'none'
+          }
+        }
+      },
       methods: {
         changeCompleted(id) {
           this.$emit('change-completed', id)
+          console.log(this.todo.completed);
         },
         removeTodo(id) {
           this.$emit('remove-todo', id)

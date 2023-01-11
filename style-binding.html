@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Style Binding</title>
+</head>
+
+<body>
+  <script src="./vue2.js"></script>
+
+  <div id="app">
+    <div v-bind:style="[baseStyles, overridingStyles]">
+      {{ title }}
+    </div>
+  </div>
+
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        title: 'Style Binding',
+        fontSize: 30,
+        baseStyles: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '10em',
+          height: '10em',
+          backgroundColor: 'steelblue'
+        }
+      },
+      computed: {
+        overridingStyles: function () {
+          return {
+            color: 'red',
+            'font-size': this.fontSize + 'px'
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

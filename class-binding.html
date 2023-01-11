@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class Binding</title>
+  <style>
+    .static {
+      display: flex;
+      width: 10em;
+      height: 10em;
+      background-color: orange;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .active {
+      border: 1px dashed #000;
+    }
+
+    .text-danger {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="./vue2.js"></script>
+
+  <div id="app">
+    <div class="static" v-bind:class="classObject">
+      {{ content }}
+    </div>
+  </div>
+
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        content: 'Class Binding',
+        isActive: true,
+        error: {
+          type: 'fatal'
+        }
+      },
+      computed: {
+        classObject: function () {
+          return {
+            active: this.isActive && !this.error,
+            'text-danger': this.error && this.error.type === 'fatal'
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

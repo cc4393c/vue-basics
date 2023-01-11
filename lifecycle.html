@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lifecycle</title>
+</head>
+
+<body>
+  <script src="./vue2.js"></script>
+
+  <div id="app">
+    <h1>{{ content }}</h1>
+  </div>
+
+  <script>
+    let app = document.getElementById('app')
+    console.log(app.innerHTML)
+    console.log(app.outerHTML)
+  </script>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        content: 'App'
+      },
+      beforeCreate() {
+        console.log('beforeCreate')
+      },
+      created() {
+        console.log('created')
+      },
+      beforeMount() {
+        console.log('beforeMount')
+        console.log(this.$el)
+
+      },
+      mounted() {
+        console.log('mounted')
+        console.log(this.$el)
+      },
+      beforeUpdate() {
+        console.log('beforeUpdate')
+      },
+      updated() {
+        console.log('updated')
+      },
+      beforeDestroy() {
+        console.log('beforeDestroy')
+      },
+      destroyed() {
+        console.log('destroyed')
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conditional Rendering</title>
+</head>
+<body>
+  <script src="./vue2.js"></script>
+  
+  <div id="app">
+    <div v-if="show">
+      <!-- Vue利用key值管理元素是否能被复用 -->
+      Username: <input type="text" key="username" />
+    </div>
+    <div v-else>
+      Email: <input type="text" key="email" />
+    </div>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        show: true
+      }
+    });
+  </script>
+</body>
+</html>
