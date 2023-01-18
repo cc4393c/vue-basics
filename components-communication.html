@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Components Communication</title>
+</head>
+<body>
+  <script src="./vue2.js"></script>
+
+  <div id="app">
+    <pokemon-list></pokemon-list>
+    <pokemon-display content="Main"></pokemon-display>
+  </div>
+
+  <script>
+    Vue.prototype.bus = new Vue();
+
+    Vue.component('pokemon-list', {
+      template: `
+        <ul>
+          <li v-for="item of items" :key="item.id">
+            <button @click="pokemonSelected(item.name)">{{ item.name }}</button>
+          </li>
+        </ul>
+      `,
+      data: function () {
+        return {
+          items: [
+            {
+              id: 1,
+              name: 'Bulbasour'
+            },
+            {
+              id: 2,
+              name: 'Charmander'
+            },
+            {
+              id: 3,
+              name: 'Squirtle'
+            }
+          ]
+        };
+      },
+      methods: {
+        pokemonSelected: function (pokemon) {
+          this.bus.$emit('pokemon-selected', pokemon);
+        }
+      }
+    });
+
+    Vue.component('pokemon-display', {
+      data: function () {
+        return {
+          selfContent: this.content
+        };
+      },
+      props: ['content'],
+      template: `
+        <div>
+          <h1>{{ selfContent }}</h1>  
+        </div>
+      `,
+      mounted: function () {
+        var that = this;
+        this.bus.$on('pokemon-selected', function (msg) {
+          that.selfContent = msg;
+        })
+      }
+    });
+
+    var vm = new Vue({
+      el: '#app',
+      data: {}
+    });
+
+    vm.$on('change', function (e) {
+      console.log(e);
+    })
+  </script>
+</body>
+</html>
